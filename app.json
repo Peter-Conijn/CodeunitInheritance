@@ -1,0 +1,32 @@
+{
+  "id": "70ca37a7-1680-4105-9bf8-48eddc42d88d",
+  "name": "Inheritance",
+  "publisher": "Peter Conijn",
+  "version": "1.0.0.0",
+  "brief": "Demo for codeunit inheritance",
+  "description": "A demo app to show how a form of codeunit inheritance can be created.",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50110,
+      "to": 50149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "14.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
