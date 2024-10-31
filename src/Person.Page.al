@@ -3,6 +3,7 @@ page 50110 Person
     ApplicationArea = All;
     Caption = 'Person';
     PageType = Card;
+    UsageCategory = Administration;
 
     layout
     {
@@ -83,6 +84,17 @@ page 50110 Person
                     this.ProcessAthlete();
                 end;
             }
+            action(ProcessProfessionalAthleteAction)
+            {
+                ApplicationArea = All;
+                Caption = 'Process as Professional Athlete';
+                ToolTip = 'Process the person as a professional athlete.';
+
+                trigger OnAction()
+                begin
+                    this.ProcessProfessionalAthlete();
+                end;
+            }
         }
         area(Promoted)
         {
@@ -93,8 +105,17 @@ page 50110 Person
                 actionref(ProcessCouchPotatoAction_Promoted; ProcessCouchPotatoAction)
                 {
                 }
-                actionref(ProcessAthleteAction_Promoted; ProcessAthleteAction)
+                group(AthleteGroup)
                 {
+                    Caption = 'Athlete';
+                    ShowAs = SplitButton;
+
+                    actionref(ProcessAthleteAction_Promoted; ProcessAthleteAction)
+                    {
+                    }
+                    actionref(ProcessProfessionalAthleteAction_Promoted; ProcessProfessionalAthleteAction)
+                    {
+                    }
                 }
             }
         }
@@ -105,6 +126,7 @@ page 50110 Person
         CouchPotato: Codeunit "Couch Potato";
         Person: Codeunit Person;
     begin
+        // Initialize the Couch Potato class using the constructor
         CouchPotato.CouchPotato(Person);
 
         // Set the properties of the base class
@@ -122,20 +144,24 @@ page 50110 Person
     local procedure ProcessAthlete()
     var
         Athlete: Codeunit Athlete;
-        Person: Codeunit Person;
     begin
-        Athlete.Athlete(Person);
-
-        // Set the properties of the base class
-        Athlete.Base().Name(this.Name);
-        Athlete.Base().Age(this.Age);
-
-        // Set the properties of the derived class
-        Athlete.AverageRunTime(this.ActivityTime);
-        Athlete.Weight(this.Weight);
-        Athlete.Sport('Running');
+        ProcessAthleteClass(Athlete);
 
         this.PrintResult(Athlete);
+    end;
+
+    local procedure ProcessProfessionalAthlete()
+    var
+        ProfessionalAthlete: Codeunit "Professional Athlete";
+        Athlete: Codeunit Athlete;
+    begin
+        ProcessAthleteClass(Athlete);
+        ProfessionalAthlete.ProfessionalAthlete(Athlete);
+
+        ProfessionalAthlete.Team('Team A');
+        ProfessionalAthlete.Salary(10000);
+
+        this.PrintResult(ProfessionalAthlete);
     end;
 
     local procedure PrintResult(CouchPotato: Codeunit "Couch Potato")
@@ -154,6 +180,33 @@ page 50110 Person
             '<br>Average Run Time: ' + Format(Athlete.AverageRunTime()) + ' minutes' +
             '<br>Weight: ' + Format(Athlete.Weight()) + ' kg' +
             '<br>Sport: ' + Athlete.Sport();
+    end;
+
+    local procedure PrintResult(ProfessionalAthlete: Codeunit "Professional Athlete")
+    begin
+        this.ResultText := 'Name: ' + ProfessionalAthlete.Base().Base().Name() +
+            '<br>Age: ' + Format(ProfessionalAthlete.Base().Base().Age()) +
+            '<br>Average Run Time: ' + Format(ProfessionalAthlete.Base().AverageRunTime()) + ' minutes' +
+            '<br>Weight: ' + Format(ProfessionalAthlete.Base().Weight()) + ' kg' +
+            '<br>Sport: ' + ProfessionalAthlete.Base().Sport() +
+            '<br>Team: ' + ProfessionalAthlete.Team() +
+            '<br>Salary: ' + Format(ProfessionalAthlete.Salary());
+    end;
+
+    local procedure ProcessAthleteClass(var Athlete: Codeunit Athlete)
+    var
+        Person: Codeunit Person;
+    begin
+        Athlete.Athlete(Person);
+
+        // Set the properties of the base class
+        Athlete.Base().Name(this.Name);
+        Athlete.Base().Age(this.Age);
+
+        // Set the properties of the derived class
+        Athlete.AverageRunTime(this.ActivityTime);
+        Athlete.Weight(this.Weight);
+        Athlete.Sport('Running');
     end;
 
     var
