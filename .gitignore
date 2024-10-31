@@ -27,6 +27,8 @@ Thumbs.db
 # Ignore the following folders
 .alpackages/
 .alpackages/*
+.codeAnalysis
+.codeAnalysis/*
 .vscode/
 .vscode/*
 .vs/
