@@ -23,11 +23,19 @@ page 50110 Person
                     Caption = 'Age';
                     ToolTip = 'Specifies the age of the person';
                 }
+                field(Weight; this.Weight)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Weight (kg)';
+                    ToolTip = 'Specifies the weight of the person';
+                    DecimalPlaces = 0 : 2;
+                }
                 field(ActivityTime; this.ActivityTime)
                 {
                     ApplicationArea = All;
                     Caption = 'Activity Time';
                     ToolTip = 'Specifies the activity time of the person';
+                    DecimalPlaces = 0 : 2;
                 }
             }
 
@@ -53,7 +61,7 @@ page 50110 Person
     {
         area(Processing)
         {
-            action(ProcessPersonAction)
+            action(ProcessCouchPotatoAction)
             {
                 ApplicationArea = All;
                 Caption = 'Process as Couch Potato';
@@ -74,6 +82,20 @@ page 50110 Person
                 begin
                     this.ProcessAthlete();
                 end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(ProcessCouchPotatoAction_Promoted; ProcessCouchPotatoAction)
+                {
+                }
+                actionref(ProcessAthleteAction_Promoted; ProcessAthleteAction)
+                {
+                }
             }
         }
     }
