@@ -33,8 +33,8 @@ codeunit 50115 "Print Data"
             '<br>Weight: ' + Format(ProfessionalPotato.CouchPotato().Weight()) + ' kg' +
             '<br>Favorite Program: ' + ProfessionalPotato.CouchPotato().FavoriteProgram() +
 
-            // Get the properties of the grandchild class.
-            '<br><br>-- Grandchild Derived Class --' +
+            // Get the properties of the doubly derived class.
+            '<br><br>-- Doubly Derived Class --' +
             '<br>Circumference: ' + Format(ProfessionalPotato.Circumference()) + ' cm';
     end;
 
@@ -67,8 +67,8 @@ codeunit 50115 "Print Data"
             '<br>Weight: ' + Format(ProfessionalAthlete.Base().Weight()) + ' kg' +
             '<br>Sport: ' + ProfessionalAthlete.Base().Sport() +
 
-            // Get the properties of the grandchild class.
-            '<br><br>-- Grandchild Derived Class --' +
+            // Get the properties of the doubly derived class.
+            '<br><br>-- Doubly Derived Class --' +
             '<br>Team: ' + ProfessionalAthlete.Team() +
             '<br>Salary: ' + Format(ProfessionalAthlete.Salary());
     end;
