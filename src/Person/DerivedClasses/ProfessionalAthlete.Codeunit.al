@@ -16,10 +16,10 @@ codeunit 50113 "Professional Athlete"
         this.Athlete.Athlete(this.BasePerson);
     end;
 
-    procedure ProfessionalAthlete(Athlete: Codeunit Athlete)
+    procedure ProfessionalAthlete(AthleseClass: Codeunit Athlete)
     begin
-        this.BasePerson := Athlete.Base();
-        this.Athlete := Athlete;
+        this.BasePerson := AthleseClass.Base();
+        this.Athlete := AthleseClass;
     end;
 
     procedure Base(): Codeunit Athlete
