@@ -141,6 +141,24 @@ page 50110 Person
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        // Just some default values
+        this.Name := 'John Doe';
+        this.Age := 30;
+        this.ActivityTime := 18;
+        this.Weight := 80;
+    end;
+
+    var
+        PrintData: Codeunit "Print Data";
+        Age: Integer;
+        Name: Text[100];
+        ResultText: Text;
+        ActivityTime: Decimal;
+        Weight: Decimal;
+
+
     local procedure ProcessCouchPotato()
     var
         CouchPotato: Codeunit "Couch Potato";
@@ -227,12 +245,4 @@ page 50110 Person
         CouchPotato.Weight(this.Weight);
         CouchPotato.FavoriteProgram('The Great British Bake-Off');
     end;
-
-    var
-        PrintData: Codeunit "Print Data";
-        Age: Integer;
-        Name: Text[100];
-        ResultText: Text;
-        ActivityTime: Decimal;
-        Weight: Decimal;
 }
