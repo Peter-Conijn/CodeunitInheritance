@@ -73,6 +73,17 @@ page 50110 Person
                     this.ProcessCouchPotato();
                 end;
             }
+            action(ProcessProfessionalPotatoAction)
+            {
+                ApplicationArea = All;
+                Caption = 'Process as Professional Potato';
+                ToolTip = 'Process the person as a professional potato.';
+
+                trigger OnAction()
+                begin
+                    this.ProcessProfessionalPotato();
+                end;
+            }
             action(ProcessAthleteAction)
             {
                 ApplicationArea = All;
@@ -102,8 +113,17 @@ page 50110 Person
             {
                 Caption = 'Process';
 
-                actionref(ProcessCouchPotatoAction_Promoted; ProcessCouchPotatoAction)
+                group(PotatoGroup)
                 {
+                    Caption = 'Potato';
+                    ShowAs = SplitButton;
+
+                    actionref(ProcessCouchPotatoAction_Promoted; ProcessCouchPotatoAction)
+                    {
+                    }
+                    actionref(ProcessProfessionalPotatoAction_Promoted; ProcessProfessionalPotatoAction)
+                    {
+                    }
                 }
                 group(AthleteGroup)
                 {
@@ -124,21 +144,27 @@ page 50110 Person
     local procedure ProcessCouchPotato()
     var
         CouchPotato: Codeunit "Couch Potato";
-        Person: Codeunit Person;
     begin
-        // Initialize the Couch Potato class using the constructor
-        CouchPotato.CouchPotato(Person);
+        ProcessCouchPotatoClass(CouchPotato);
 
-        // Set the properties of the base class
-        CouchPotato.Base().Name(this.Name);
-        CouchPotato.Base().Age(this.Age);
+        this.ResultText := PrintData.PrintResult(CouchPotato);
+    end;
 
-        // Set the properties of the derived class
-        CouchPotato.AverageSitTime(this.ActivityTime);
-        CouchPotato.Weight(this.Weight);
-        CouchPotato.FavoriteProgram('The Great British Bake Off');
+    local procedure ProcessProfessionalPotato()
+    var
+        ProfessionalPotato: Codeunit "Professional Potato";
+        CouchPotato: Codeunit "Couch Potato";
+    begin
+        ProcessCouchPotatoClass(CouchPotato);
 
-        this.PrintResult(CouchPotato);
+        // Initialize the Professional Couch Potato class using the constructor using the previously inherited Couch Potato class
+        // This will also instantiate the base Person class
+        ProfessionalPotato.ProfessionalPotato(CouchPotato);
+
+        // Now we add properties specific to the Professional Potato class, which is a grandchild of the Person class
+        ProfessionalPotato.Circumference(ProfessionalPotato.CouchPotato().Weight() * 2);
+
+        this.ResultText := PrintData.PrintResult(ProfessionalPotato);
     end;
 
     local procedure ProcessAthlete()
@@ -147,7 +173,7 @@ page 50110 Person
     begin
         ProcessAthleteClass(Athlete);
 
-        this.PrintResult(Athlete);
+        this.ResultText := PrintData.PrintResult(Athlete);
     end;
 
     local procedure ProcessProfessionalAthlete()
@@ -156,47 +182,23 @@ page 50110 Person
         Athlete: Codeunit Athlete;
     begin
         ProcessAthleteClass(Athlete);
+
+        // Initialize the Professional Athlete class using the constructor using the previously inherited Athlete class
+        // This will also instantiate the base Person class
         ProfessionalAthlete.ProfessionalAthlete(Athlete);
 
+        // Now we add properties specific to the Professional Athlete class, which is a grandchild of the Person class
         ProfessionalAthlete.Team('Team A');
         ProfessionalAthlete.Salary(10000);
 
-        this.PrintResult(ProfessionalAthlete);
-    end;
-
-    local procedure PrintResult(CouchPotato: Codeunit "Couch Potato")
-    begin
-        this.ResultText := 'Name: ' + CouchPotato.Base().Name() +
-            '<br>Age: ' + Format(CouchPotato.Base().Age()) +
-            '<br>Average Sit Time: ' + Format(CouchPotato.AverageSitTime()) + ' hours' +
-            '<br>Weight: ' + Format(CouchPotato.Weight()) + ' kg' +
-            '<br>Favorite Program: ' + CouchPotato.FavoriteProgram();
-    end;
-
-    local procedure PrintResult(Athlete: Codeunit Athlete)
-    begin
-        this.ResultText := 'Name: ' + Athlete.Base().Name() +
-            '<br>Age: ' + Format(Athlete.Base().Age()) +
-            '<br>Average Run Time: ' + Format(Athlete.AverageRunTime()) + ' minutes' +
-            '<br>Weight: ' + Format(Athlete.Weight()) + ' kg' +
-            '<br>Sport: ' + Athlete.Sport();
-    end;
-
-    local procedure PrintResult(ProfessionalAthlete: Codeunit "Professional Athlete")
-    begin
-        this.ResultText := 'Name: ' + ProfessionalAthlete.Base().Base().Name() +
-            '<br>Age: ' + Format(ProfessionalAthlete.Base().Base().Age()) +
-            '<br>Average Run Time: ' + Format(ProfessionalAthlete.Base().AverageRunTime()) + ' minutes' +
-            '<br>Weight: ' + Format(ProfessionalAthlete.Base().Weight()) + ' kg' +
-            '<br>Sport: ' + ProfessionalAthlete.Base().Sport() +
-            '<br>Team: ' + ProfessionalAthlete.Team() +
-            '<br>Salary: ' + Format(ProfessionalAthlete.Salary());
+        this.ResultText := PrintData.PrintResult(ProfessionalAthlete);
     end;
 
     local procedure ProcessAthleteClass(var Athlete: Codeunit Athlete)
     var
         Person: Codeunit Person;
     begin
+        // Initialize the Athlete class using the constructor
         Athlete.Athlete(Person);
 
         // Set the properties of the base class
@@ -209,7 +211,25 @@ page 50110 Person
         Athlete.Sport('Running');
     end;
 
+    local procedure ProcessCouchPotatoClass(var CouchPotato: Codeunit "Couch Potato")
     var
+        Person: Codeunit Person;
+    begin
+        // Initialize the Couch Potato class using the constructor
+        CouchPotato.CouchPotato(Person);
+
+        // Set the properties of the base class
+        CouchPotato.Base().Name(this.Name);
+        CouchPotato.Base().Age(this.Age);
+
+        // Set the properties of the derived class
+        CouchPotato.AverageSitTime(this.ActivityTime);
+        CouchPotato.Weight(this.Weight);
+        CouchPotato.FavoriteProgram('The Great British Bake-Off');
+    end;
+
+    var
+        PrintData: Codeunit "Print Data";
         Age: Integer;
         Name: Text[100];
         ResultText: Text;
