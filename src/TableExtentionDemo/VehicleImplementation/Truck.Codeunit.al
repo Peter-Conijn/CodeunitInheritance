@@ -1,4 +1,4 @@
-codeunit 50115 Truck
+codeunit 50118 Truck
 {
     Access = Public;
     InherentEntitlements = X;
@@ -22,7 +22,6 @@ codeunit 50115 Truck
     procedure NoOfAxles(AxleCount: Integer)
     begin
         this.AxleCount := AxleCount;
-        this.BaseVerhicle.Wheels := AxleCount * 2;
     end;
 
     procedure NoOfAxles(): Integer

@@ -9,6 +9,7 @@ table 50111 "Submitted Vehicle"
         {
             Caption = 'Entry No.';
             ToolTip = 'Specifies the entry number of the submitted vehicle.';
+            AutoIncrement = true;
         }
         field(2; "Code"; Code[20])
         {

@@ -11,6 +11,7 @@ codeunit 50116 "Submit Registration"
         JObject.Add('type', 'Car');
 
         Car.VerifyLicensePlate();
+        Car.Base().Wheels := 4;
 
         SetVehicleData(Car.Base(), JObject);
 
@@ -34,6 +35,7 @@ codeunit 50116 "Submit Registration"
         if Truck.MaximumCargoWeight() / Truck.NoOfAxles() > 10000 then
             Error(MaxWeightErr);
 
+        Truck.Base().Wheels := Truck.NoOfAxles() * 2;
         SetVehicleData(Truck.Base(), JObject);
 
         JObject.Add('axleCount', Truck.NoOfAxles());
